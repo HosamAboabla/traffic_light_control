@@ -12,7 +12,7 @@
 #include "../../APPLICATION/CONFIGURATIONS/CONFIGURATION.h"
 #include "../DIO/DIO.h"
 
-#define Frequency 16
+#define Frequency 8
 #define Bits 256
 
 typedef enum

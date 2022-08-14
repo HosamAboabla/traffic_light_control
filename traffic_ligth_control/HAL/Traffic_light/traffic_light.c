@@ -7,67 +7,95 @@
 
 #include "traffic_light.h"
 
-void traffic_light_init(traffic_light* tl)
+TRAFFIC_LIGHT_ERROR_CODE traffic_light_init(traffic_light* tl)
 {
-	LED_Initialization(&tl->green);
-	LED_Initialization(&tl->yellow);
-	LED_Initialization(&tl->red);
-	stop(tl);
+	if( LED_Initialization(&tl->green) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Initialization(&tl->yellow) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Initialization(&tl->red) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	
+	if( stop(tl) != TRAFFIC_LIGHT_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	
+	return TRAFFIC_LIGHT_SUCCESS;
 }
 
-void stop(traffic_light* tl)
+TRAFFIC_LIGHT_ERROR_CODE stop(traffic_light* tl)
 {
-	LED_On(&tl->red);
-	LED_Off(&tl->green);
-	LED_Off(&tl->yellow);
+	if( LED_On(&tl->red) != LED_SUCCESS)
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Off(&tl->green) != LED_SUCCESS)
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Off(&tl->yellow) != LED_SUCCESS)
+		return TRAFFIC_LIGHT_FAIL;
 	tl->status = traffic_status_red;
-	// tl->previous_status = traffic_status_yellow;
+
+	return TRAFFIC_LIGHT_SUCCESS;
 }
-void go(traffic_light* tl)
+TRAFFIC_LIGHT_ERROR_CODE go(traffic_light* tl)
 {
-	LED_On(&tl->green);
-	LED_Off(&tl->red);
-	LED_Off(&tl->yellow);
+	if( LED_On(&tl->green) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Off(&tl->red) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Off(&tl->yellow) != LED_SUCCESS)
+		return TRAFFIC_LIGHT_FAIL;
+	
 	tl->status = traffic_status_green;
-	// tl->previous_status = traffic_status_red;
+
+	return TRAFFIC_LIGHT_SUCCESS;
 }
-void ready(traffic_light* tl)
+TRAFFIC_LIGHT_ERROR_CODE ready(traffic_light* tl)
 {
 	
 	if( tl->status == traffic_status_green)
 	{
-		LED_On(&tl->green);
+		if( LED_On(&tl->green) != LED_SUCCESS )
+			return TRAFFIC_LIGHT_FAIL;
 	}else{
-		LED_Off(&tl->green);
+		if( LED_Off(&tl->green) != LED_SUCCESS )
+			return TRAFFIC_LIGHT_FAIL;
 	}
 	
-	LED_Off(&tl->yellow);
-	LED_Off(&tl->red);
+	if( LED_Off(&tl->yellow) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
+	if( LED_Off(&tl->red) != LED_SUCCESS )
+		return TRAFFIC_LIGHT_FAIL;
 	
 	tl->previous_status = tl->status;
 	tl->status = traffic_status_yellow;
+	
+	return TRAFFIC_LIGHT_SUCCESS;
 }
 
 
-void next_state(traffic_light* tl)
+TRAFFIC_LIGHT_ERROR_CODE next_state(traffic_light* tl)
 {
 	if(tl->status == traffic_status_green)
 	{
-		ready(tl);
+		if (ready(tl) != TRAFFIC_LIGHT_SUCCESS )
+			return TRAFFIC_LIGHT_FAIL;
 	}
 	else if(tl->status == traffic_status_yellow)
 	{
 		if(tl->previous_status == traffic_status_green)
 		{
-			stop(tl);	
+			if( stop(tl) != TRAFFIC_LIGHT_SUCCESS )
+				return TRAFFIC_LIGHT_FAIL;	
 		}
 		else{
-			go(tl);
+			if( go(tl) != TRAFFIC_LIGHT_SUCCESS )
+				return TRAFFIC_LIGHT_FAIL;
 		}
 		
 	}
 	else if(tl->status == traffic_status_red)
 	{
-		ready(tl);
+		if( ready(tl) != TRAFFIC_LIGHT_SUCCESS )
+			return TRAFFIC_LIGHT_FAIL;
 	}
+	
+	return TRAFFIC_LIGHT_SUCCESS;
 }

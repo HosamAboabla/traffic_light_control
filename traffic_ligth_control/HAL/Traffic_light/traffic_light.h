@@ -11,11 +11,11 @@
 
 #include "traffic_light_configurations.h"
 
-void traffic_light_init(traffic_light* tl);
-void stop(traffic_light* tl);
-void go(traffic_light* tl);
-void ready(traffic_light* tl);
-void next_state(traffic_light* tl);
+TRAFFIC_LIGHT_ERROR_CODE traffic_light_init(traffic_light* tl);
+TRAFFIC_LIGHT_ERROR_CODE stop(traffic_light* tl);
+TRAFFIC_LIGHT_ERROR_CODE go(traffic_light* tl);
+TRAFFIC_LIGHT_ERROR_CODE ready(traffic_light* tl);
+TRAFFIC_LIGHT_ERROR_CODE next_state(traffic_light* tl);
 
 
 

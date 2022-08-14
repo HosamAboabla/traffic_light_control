@@ -26,6 +26,9 @@ typedef struct traffic_light {
 	uint8_t previous_status;
 }traffic_light;
 
-
+typedef enum{
+	TRAFFIC_LIGHT_SUCCESS,
+	TRAFFIC_LIGHT_FAIL
+}TRAFFIC_LIGHT_ERROR_CODE;
 
 #endif /* TRAFFIC_LIGHT_CONFIGURATIONS_H_ */

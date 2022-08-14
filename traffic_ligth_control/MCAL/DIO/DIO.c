@@ -9,8 +9,10 @@
 #include "DIO.h"
 
 // Prototypes for functions pin only
-void DIO_SetPinDirection (Port port , Pin pin , State state)
+DIO_ERROR_CODE DIO_SetPinDirection (Port port , Pin pin , State state)
 {
+	// Input state, clear DDR pin
+	// Output state, set DDR pin
 	switch(state)
 	{
 		case DIO_INPUT:
@@ -55,9 +57,14 @@ void DIO_SetPinDirection (Port port , Pin pin , State state)
 			break;
 		
 	}
+	
+	return DIO_SUCCESS;
 }
-void DIO_SetPinValue (Port port , Pin pin , Status status)
+DIO_ERROR_CODE DIO_SetPinValue (Port port , Pin pin , Status status)
 {
+	// To make it low, clear PORT pin
+	// To make it hight, set PORT pin
+	
 	switch(status)
 	{
 		case DIO_LOW:
@@ -103,9 +110,12 @@ void DIO_SetPinValue (Port port , Pin pin , Status status)
 		
 	}
 	
+	return DIO_SUCCESS;
+	
 }
-void DIO_TogglePinValue(Port port , Pin pin)
+DIO_ERROR_CODE DIO_TogglePinValue(Port port , Pin pin)
 {
+	// to toggle, XOR PORT pin
 	switch(port)
 	{
 		case DIO_PORTA:
@@ -123,202 +133,5 @@ void DIO_TogglePinValue(Port port , Pin pin)
 		default:
 			break;
 	}
+	return DIO_SUCCESS;
 }
-// if pin is defined as input
-void DIO_ReadPinValue(Port port , Pin pin , uint8* reading)
-{
-	switch(port)
-	{
-		case DIO_PORTA:
-			*reading = GET_BIT(PINA , pin);
-			break;
-		case DIO_PORTB:
-			*reading = GET_BIT(PINB , pin);
-			break;
-		case DIO_PORTC:
-			*reading = GET_BIT(PINC , pin);
-			break;
-		case DIO_PORTD:
-			*reading = GET_BIT(PIND , pin);
-			break;
-		default:
-		break;
-	}
-	
-}
-void DIO_SetPinPullUp(Port port , Pin pin)
-{
-	switch(port)
-	{
-		case DIO_PORTA:
-			SET_BIT(PORTA , pin);
-			break;
-		case DIO_PORTB:
-			SET_BIT(PORTB , pin);
-			break;
-		case DIO_PORTC:
-			SET_BIT(PORTC , pin);
-			break;
-		case DIO_PORTD:
-			SET_BIT(PORTD , pin);
-			break;
-		default:
-			break;
-	}
-}
-
-// Prototypes for functions for port only
-void DIO_SetPortDirection(Port port , State state)
-{
-	switch(state)
-	{
-		case DIO_INPUT:
-			switch(port)
-			{
-				case DIO_PORTA:
-					DDRA = 0x00;
-					break;
-					case DIO_PORTB:
-					DDRB = 0x00;
-					break;
-					case DIO_PORTC:
-					DDRC = 0x00;
-					break;
-					case DIO_PORTD:
-					DDRD = 0x00;
-					break;
-					default:
-					break;
-			}
-			break;
-		case DIO_OUTPUT:
-			switch(port)
-			{
-				case DIO_PORTA:
-				DDRA = 0xFF;
-				break;
-				case DIO_PORTB:
-				DDRB = 0xFF;
-				break;
-				case DIO_PORTC:
-				DDRC = 0xFF;
-				break;
-				case DIO_PORTD:
-				DDRD = 0xFF;
-				break;
-				default:
-				break;
-			}
-			break;
-	}
-}
-void DIO_SetPortValue(Port port , Status status)
-{
-	switch(status)
-	{
-		case DIO_LOW:
-		switch(port)
-		{
-			case DIO_PORTA:
-				PORTA = 0x00;
-				break;
-			case DIO_PORTB:
-				PORTB = 0x00;
-				break;
-			case DIO_PORTC:
-				PORTC = 0x00;
-				break;
-			case DIO_PORTD:
-				PORTD = 0x00;
-				break;
-			default:
-			break;
-		}
-		break;
-		case DIO_OUTPUT:
-		switch(port)
-		{
-			case DIO_PORTA:
-				PORTA = 0xFF;
-				break;
-			case DIO_PORTB:
-				PORTB = 0xFF;
-				break;
-			case DIO_PORTC:
-				PORTC = 0xFF;
-				break;
-			case DIO_PORTD:
-				PORTD = 0xFF;
-				break;
-			default:
-			break;
-		}
-		break;
-	}
-}
-void DIO_TogglePortValue(Port port)
-{
-	switch(port)
-	{
-		case DIO_PORTA:
-			PORTA ^= 0xFF;
-			break;
-		case DIO_PORTB:
-			PORTB ^= 0xFF;
-			break;
-		case DIO_PORTC:
-			PORTC ^= 0xFF;
-			break;
-		case DIO_PORTD:
-			PORTD ^= 0xFF;
-			break;
-		default:
-		break;
-	}
-}
-uint8_t DIO_ReadPortValue(Port port)
-{
-	uint8_t reading = 0x00;
-	switch(port)
-	{
-		case DIO_PORTA:
-			reading = PINA;
-			break;
-		case DIO_PORTB:
-			reading = PINB;
-			break;
-		case DIO_PORTC:
-			reading = PINC;
-			break;
-		case DIO_PORTD:
-			reading = PIND;
-			break;
-		default:
-		break;
-	}
-	
-	return reading;
-}
-
-/* 
-void DIO_SetPortPullUp(Port port , Pin pin)
-{
-	switch(port)
-	{
-		case DIO_PORTA:
-		 PORTA = 0xFF;
-		break;
-		case DIO_PORTB:
-		PORTB = 0xFF;
-		break;
-		case DIO_PORTC:
-		PORTC = 0xFF;
-		break;
-		case DIO_PORTD:
-		PORTD = 0xFF;
-		break;
-		default:
-		break;
-	}
-}
-*/

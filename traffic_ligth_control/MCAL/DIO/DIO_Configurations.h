@@ -48,6 +48,12 @@ typedef enum
 	DIO_HIGH = 1
 }Status;
 
+
+typedef enum{
+	DIO_SUCCESS,
+	DIO_FAIL
+}DIO_ERROR_CODE;
+
 // Define boolean type
 typedef enum
 {

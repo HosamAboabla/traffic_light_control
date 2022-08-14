@@ -7,19 +7,33 @@
 
 #include "LED.h"
 
-void LED_Initialization(LED* led)
+LED_ERROR_CODE LED_Initialization(LED* led)
 {
-	DIO_SetPinDirection(led->port , led->pin , DIO_OUTPUT);
+	// set DDR pin, to make it output
+	if( DIO_SetPinDirection(led->port , led->pin , DIO_OUTPUT) == DIO_SUCCESS )
+		return LED_SUCCESS;
+	return LED_FAIL;
+	
 }
-void LED_On(LED* led)
+LED_ERROR_CODE LED_On(LED* led)
 {
-	DIO_SetPinValue(led->port , led->pin , DIO_HIGH);
+	// set PORT pin, to make it on
+	if( DIO_SetPinValue(led->port , led->pin , DIO_HIGH) == DIO_SUCCESS)
+		return LED_SUCCESS;
+	
+	return LED_FAIL;
 }
-void LED_Off(LED* led)
+LED_ERROR_CODE LED_Off(LED* led)
 {
-	DIO_SetPinValue(led->port , led->pin , DIO_LOW);
+	// reset PORT pin, to make it off
+	if( DIO_SetPinValue(led->port , led->pin , DIO_LOW) == DIO_SUCCESS )
+		return LED_SUCCESS;
+	return LED_FAIL;
 }
-void LED_Toggle(LED* led)
+LED_ERROR_CODE LED_Toggle(LED* led)
 {
-	DIO_TogglePinValue(led->port , led->pin);
+	// XOR PORT pin, to make it toggle
+	if( DIO_TogglePinValue(led->port , led->pin) == DIO_SUCCESS )
+		return LED_SUCCESS;
+	return LED_FAIL;
 }

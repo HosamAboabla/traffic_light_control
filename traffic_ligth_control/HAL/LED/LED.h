@@ -11,10 +11,10 @@
 
 #include "LED_Configurations.h"
 
-void LED_Initialization(LED* led);
-void LED_On(LED* led);
-void LED_Off(LED* led);
-void LED_Toggle(LED* led);
+LED_ERROR_CODE LED_Initialization(LED* led);
+LED_ERROR_CODE LED_On(LED* led);
+LED_ERROR_CODE LED_Off(LED* led);
+LED_ERROR_CODE LED_Toggle(LED* led);
 
 
 

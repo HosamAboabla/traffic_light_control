@@ -30,4 +30,9 @@ typedef struct LED{
 }LED;
 
 
+typedef enum{
+	LED_SUCCESS,
+	LED_FAIL
+}LED_ERROR_CODE;
+
 #endif /* LED_CONFIGURATIONS_H_ */

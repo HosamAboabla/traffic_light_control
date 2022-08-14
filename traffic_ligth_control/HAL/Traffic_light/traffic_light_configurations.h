@@ -23,6 +23,7 @@ typedef struct traffic_light {
 	LED yellow;
 	LED red;
 	uint8_t status;
+	uint8_t previous_status;
 }traffic_light;
 
 

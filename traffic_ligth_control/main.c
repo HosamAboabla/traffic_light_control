@@ -13,15 +13,17 @@
 extern uint32_t Number_OVF;
 extern uint32_t init_val;
 
-
-
-traffic_light cars_traffic_light;// = {car_green , car_yellow , car_red};
-traffic_light pedestrains_traffic_light;// = {pedestrain_green , pedestrain_yellow , pedestrain_red};
+extern uint32_t cnt;// = 0;
+extern uint8_t button_pressed;// = 0;
+extern traffic_light cars_traffic_light;// = {car_green , car_yellow , car_red};
+extern traffic_light pedestrains_traffic_light;// = {pedestrain_green , pedestrain_yellow , pedestrain_red};
 	
 int main(void)
 {
-	
-	
+	/*
+	// sei();
+	// SET_BIT(GIFR , INTF0);
+	SET_BIT(GICR , INT0);
 	LED car_green = { CAR_PORT , CAR_GREEN_PIN };
 	LED car_yellow = { CAR_PORT , CAR_YELLOW_PIN};
 	LED car_red = { CAR_PORT , CAR_RED_PIN};
@@ -31,7 +33,7 @@ int main(void)
 		
 	cars_traffic_light.green = car_green;
 	cars_traffic_light.yellow = car_yellow;
-	cars_traffic_light.green = car_red;
+	cars_traffic_light.red = car_red;
 	
 	pedestrains_traffic_light.green = pedestrain_green;
 	pedestrains_traffic_light.yellow = pedestrain_yellow;
@@ -44,22 +46,15 @@ int main(void)
 	
 	Timer0_with_interrupt_initialization(TIMER0_Normal , PIN_Disconnected);
 	Timer0_Start(TIMER0_Prescaler_256);
-	Timer0_with_interrupt_set_delay(TIMER0_Normal , 1000 , 0);
+	Timer0_with_interrupt_set_delay(TIMER0_Normal , 5000 , 0);
+	*/
 	
+	app_init();
 	
     /* Replace with your application code */
     while (1) 
     {
-		// go(&cars_traffic_light);
-		// stop(&pedestrains_traffic_light);
-		// _delay_ms(5000);
-		// ready(&cars_traffic_light);
-		// ready(&pedestrains_traffic_light);
-		// _delay_ms(5000);
-		// stop(&cars_traffic_light);
-		// go(&pedestrains_traffic_light);
-		// _delay_ms(5000);
-
+		app_start();
     }
 }
 
@@ -68,23 +63,38 @@ int main(void)
 
 ISR(TIMER0_OVF_vect){
 	
-	static uint32_t cnt=0;
+	
+	
+	// if( (cnt == Number_OVF / 5) || (cnt == Number_OVF * 2 / 5) || (cnt == Number_OVF * 3 / 5) || (cnt == Number_OVF * 4 / 5))
+	if( cnt % (Number_OVF/5) ==0 )
+	{
+
+		if(cars_traffic_light.status == traffic_status_yellow)
+		{
+			LED_Toggle(&cars_traffic_light.yellow);
+		}
+		if(pedestrains_traffic_light.status == traffic_status_yellow)
+		{
+			LED_Toggle(&pedestrains_traffic_light.yellow);
+		}
+
+		
+	}
 
 	if(cnt==Number_OVF){		//if counter reach number of overflows
 		// LED_Toggle(&led1);
 		TCNT0 = init_val;
-		if(cars_traffic_light.status == traffic_status_green)
+		next_state(&cars_traffic_light);
+		
+		if(pedestrains_traffic_light.status != traffic_status_red)
 		{
-			ready(&cars_traffic_light);
+			next_state(&pedestrains_traffic_light);
 		}
-		else if(cars_traffic_light.status == traffic_status_yellow)
+		else
 		{
-			stop(&cars_traffic_light);
+			button_pressed = 0;			
 		}
-		else if(cars_traffic_light.status == traffic_status_red)
-		{
-			go(&cars_traffic_light);
-		}
+
 		cnt=0;					//make  counter =0
 	}
 	else
@@ -92,4 +102,35 @@ ISR(TIMER0_OVF_vect){
 		cnt++;
 	}
 		
+}
+
+
+
+
+ISR(INT0_vect){
+	
+	if(cars_traffic_light.status == traffic_status_red && button_pressed == 0)
+	{
+		Timer0_Stop();
+		Timer0_Start(TIMER0_Prescaler_256);
+		cnt = 0;
+		go(&pedestrains_traffic_light);
+	}
+	else if(cars_traffic_light.status == traffic_status_green && button_pressed == 0)
+	{
+		Timer0_Stop();
+		Timer0_Start(TIMER0_Prescaler_256);
+		cnt = 0;
+		next_state(&cars_traffic_light);
+		next_state(&pedestrains_traffic_light);
+	}
+	else if(cars_traffic_light.status == traffic_status_yellow && button_pressed == 0)
+	{
+		Timer0_Stop();
+		Timer0_Start(TIMER0_Prescaler_256);
+		cnt = 0;
+		cars_traffic_light.previous_status = traffic_status_green;
+		next_state(&pedestrains_traffic_light);
+	}
+	button_pressed = 1;
 }

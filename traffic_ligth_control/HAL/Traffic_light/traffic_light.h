@@ -15,6 +15,7 @@ void traffic_light_init(traffic_light* tl);
 void stop(traffic_light* tl);
 void go(traffic_light* tl);
 void ready(traffic_light* tl);
+void next_state(traffic_light* tl);
 
 
 

@@ -22,12 +22,14 @@ int main(void)
 {
 	
 	
-	app_init();
+	// app_init();
 	
     /* Replace with your application code */
     while (1) 
     {
-		app_start();
+		DIO_TogglePinValue(CAR_PORT , CAR_GREEN_PIN);
+		_delay_ms(1000);
+		// app_start();
     }
 }
 

@@ -20,6 +20,7 @@ void app_init(void)
 	// sei();
 	// SET_BIT(GIFR , INTF0);
 	SET_BIT(GICR , INT0);
+	// Interrupt_Initialization(INT0_Signal);
 	LED car_green = { CAR_PORT , CAR_GREEN_PIN };
 	LED car_yellow = { CAR_PORT , CAR_YELLOW_PIN};
 	LED car_red = { CAR_PORT , CAR_RED_PIN};

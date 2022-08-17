@@ -179,7 +179,9 @@ void Timer0_with_interrupt_set_delay(TIMER0_Mode mode , uint32_t delay , uint16_
 		uint32_t tick = (1 * Global_Prescaler) / Frequency;
 		uint32_t Count = (delay * 1000) / tick;
 		Number_OVF = Count / Bits;
-		Number_OVF++;
+		if( Count % Bits )
+			Number_OVF++;
+		
 		init_val = Bits - (Count % Bits);
 		TCNT0 = init_val;
 	}

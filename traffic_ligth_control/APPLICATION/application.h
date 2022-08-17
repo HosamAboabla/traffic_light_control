@@ -16,6 +16,7 @@
 #include "../HAL/Traffic_light/traffic_light.h"
 
 #include "../MCAL/TIMER0/TIMER0.h"
+#include "../MCAL/Interrupt/Interrupt.h"
 
 void app_init(void);
 void app_start(void);

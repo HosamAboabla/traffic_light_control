@@ -7,7 +7,7 @@
  Crosswalk buttons let the signal operations know that someone is planning to cross the street, so the light adjusts, giving the pedestrian enough time to get across.
  ## Hardware requirements:
  ![Hardware](screenshoots/simulation.jpg)
- 
+
  -ATmega32 microcontroller
  -One push button connected to INT0 pin for pedestrian
  -Three LEDs for cars - Green, Yellow, and Red, connected on port A, pins 0, 1, and 2
@@ -27,7 +27,7 @@
  Traffic lights signals are going to the normal mode again.
  
 ## Flow Chart of Program
-![Traffic-light-control_flowChart](screenshoots/flowChart.png)
+![Traffic-light-control_flowChart](screenshoots/flowchart.png)
 ## Screen Shots  
 ## Screen Records 
  

@@ -1,3 +1,8 @@
+## Screen Shots  
+[Screenshoots](https://drive.google.com/drive/folders/1EPGYXfXTllBEIEYpr-9Jrxq5RQNpfM5R?usp=sharing)
+## Screen Records 
+[Videos](https://drive.google.com/drive/folders/1Vclws_sHLDQkDayvuvXkg1NdrfEJRy-K?usp=sharing)
+
  # Traffic-light-control
  Traffic lights are signaling devices positioned at road intersections, pedestrian crossings, and other locations to control the flow of traffic.  
  Traffic lights normally consist of three signals, transmitting meaning to drivers and riders through colors and symbols including arrows and bicycles.
@@ -28,6 +33,4 @@
  
 ## Flow Chart of Program
 ![Traffic-light-control_flowChart](screenshoots/flowchart.png)
-## Screen Shots  
-## Screen Records 
  
